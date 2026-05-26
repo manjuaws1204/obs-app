@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: obs-app
+  namespace: OBS
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: obs-app
+  template:
+    metadata:
+      labels:
+        app: obs-app
+    spec:
+      containers:
+        - name: obs-app
+          image: <YOUR_DOCKERHUB_USERNAME>/obs-app:latest
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: obs-app
+  namespace: OBS
+spec:
+  selector:
+    app: obs-app
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: NodePort
